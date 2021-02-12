@@ -1,10 +1,10 @@
-﻿using blazor_battles.Shared;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using blazor_battles.Shared;
 
 namespace blazor_battles.Server.Controllers
 {
