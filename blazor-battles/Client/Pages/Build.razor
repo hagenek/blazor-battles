@@ -17,7 +17,16 @@
 
 <button class="btn btn-primary" @onclick="BuildUnit">Eat Bananas</button>
 
+@if (needMoreBananas)
+{
+    <div class="validation-message">
+        Not enough bananas! :(
+    </div>
+}
+
 @code {
+
+    bool needMoreBananas;
 
     int selectedUnitId = 1;
 
@@ -25,6 +34,14 @@
     {
         Unit selectedUnit =
             UnitService.Units.FirstOrDefault(unit => unit.Id == selectedUnitId);
+        if (selectedUnit.BananaCost > BananaService.Bananas)
+        {
+            needMoreBananas = true;
+            return;
+        }
+
+        needMoreBananas = false;
+
         BananaService.EatBananas(selectedUnit.BananaCost);
         UnitService.AddUnit(selectedUnitId);
     }

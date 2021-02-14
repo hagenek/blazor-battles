@@ -27,6 +27,12 @@ app {
     display: flex;
 }
 
+.army-list {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
 .top-row {
     height: 3.5rem;
     display: flex;
