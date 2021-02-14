@@ -15,5 +15,9 @@
     <ProjectReference Include="..\Shared\blazor-battles.Shared.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Watch Include="..\client\**\*.razor" />
+		<Watch Include="..\client\**\*.css" />
+	</ItemGroup>
 
 </Project>
