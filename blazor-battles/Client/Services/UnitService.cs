@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using blazor_battles.Shared;
+using Blazored.Toast.Services;
+
 
 namespace blazor_battles.Client.Services
 {
     public class UnitService : IUnitService
     {
+        private readonly IToastService _toastService;
+
+        public UnitService(IToastService toastService)
+        {
+            _toastService = toastService;
+        }
         public IList<Unit> Units { get; } = new List<Unit>
         {
             new Unit {Id = 1, Title = "Knight", Attack = 10, Defense = 10, BananaCost = 100},
@@ -20,9 +28,7 @@ namespace blazor_battles.Client.Services
         {
             Unit unit = Units.First(unit1 => unit1.Id == unitId);
             MyUnits.Add(new UserUnit {UnitId = unit.Id, HitPoints = unit.HitPoints});
-
-            Console.WriteLine($"{unit.Title} was added");
-            Console.WriteLine($"Your army size: {MyUnits.Count}");
+            _toastService.ShowSuccess($"Your {unit.Title} has been built!", "Unit built");
         }
     }
 }

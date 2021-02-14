@@ -2,6 +2,7 @@
 @using blazor_battles.Shared
 @inject blazor_battles.Client.Services.IBananaService BananaService
 @inject blazor_battles.Client.Services.IUnitService UnitService
+@inject IToastService ToastService
 
 <h3>Build</h3>
 
@@ -37,6 +38,7 @@
         if (selectedUnit.BananaCost > BananaService.Bananas)
         {
             needMoreBananas = true;
+            ToastService.ShowError("Not enough bananas", ":(");
             return;
         }
 
