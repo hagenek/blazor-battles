@@ -20,6 +20,9 @@ namespace blazor_battles.Client.Services
         {
             Unit unit = Units.First(unit1 => unit1.Id == unitId);
             MyUnits.Add(new UserUnit {UnitId = unit.Id, HitPoints = unit.HitPoints});
+
+            Console.WriteLine($"{unit.Title} was added");
+            Console.WriteLine($"Your army size: {MyUnits.Count}");
         }
     }
 }
