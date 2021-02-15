@@ -1,0 +1,47 @@
+﻿@page "/login"
+@using System.Security.Cryptography
+
+<h3>Login</h3>
+
+@if (isAuthenticated)
+{
+    <h3>Welcome, @user.Username!</h3>
+}
+else
+{
+
+<EditForm Model="@user" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <p>
+        <label>
+            Username
+        </label>
+        <div>
+            <InputText id="username" @bind-Value="user.Username"/>
+        </div>
+    </p>
+
+    <p>
+        <label>
+            Password
+        </label>
+        <div>
+            <InputText id="password" type="password" @bind-Value="user.Password"/>
+        </div>
+    </p>
+    <button class="btn-primary">Login</button>
+    <br/>
+    <ValidationSummary />
+</EditForm>
+}
+
+@code {
+    private blazor_battles.Shared.UserLogin user = new blazor_battles.Shared.UserLogin();
+
+    bool isAuthenticated;
+
+    private void HandleLogin()
+    {
+        isAuthenticated = true;
+    }
+}
