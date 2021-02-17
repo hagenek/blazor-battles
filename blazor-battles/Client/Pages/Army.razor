@@ -3,6 +3,8 @@
 
 <h3>Army</h3>
 
+@if (UnitService.Units.Count > 0) {
+
 @foreach (var userUnit in UnitService.MyUnits)
 {
     <div class="army-list">
@@ -24,13 +26,20 @@
             @userUnit.HitPoints HP
         </div>
     </div>
-
-
+}
+}
+else
+{
+    <span>Loading...</span>
 }
 
 
 
 
-@code {
 
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await UnitService.LoadUnitsAsync();
+    }
 }
