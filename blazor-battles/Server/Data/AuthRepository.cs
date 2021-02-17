@@ -48,8 +48,7 @@ namespace blazor_battles.Shared.Data
 
         public async Task<bool> UserExists(string email)
         {
-            return (await _context.Users.AnyAsync(x =>
-                String.Equals(x.Email, email, StringComparison.CurrentCultureIgnoreCase)));
+            return await _context.Users.AnyAsync(x => x.Email == email);
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
