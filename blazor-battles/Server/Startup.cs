@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using blazor_battles.Shared.Data;
+using Blazored.Toast;
+using Microsoft.EntityFrameworkCore;
 
 namespace blazor_battles.Server
 {
@@ -22,9 +25,11 @@ namespace blazor_battles.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<DataContext>(x =>
+                x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddBlazoredToast();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
