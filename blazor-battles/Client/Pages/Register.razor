@@ -1,6 +1,9 @@
 ﻿@page "/register"
+@using blazor_battles.Client.Services
 @inject blazor_battles.Client.Services.IUnitService UnitService
 @inject NavigationManager NavigationManager
+@inject IAuthService AuthService
+@inject IToastService ToastService
 
 <h3>Register</h3>
 
@@ -62,9 +65,18 @@
 @code {
     blazor_battles.Shared.UserRegister user = new blazor_battles.Shared.UserRegister();
 
-    void HandleRegistration()
+    public async void HandleRegistration()
     {
-        NavigationManager.NavigateTo("login");
+        var result = await AuthService.Register(user);
+        if (result.Success)
+        {
+            ToastService.ShowSuccess(result.Message);
+            NavigationManager.NavigateTo("");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("login");
+        }
     }
     protected override async Task OnInitializedAsync()
     {
