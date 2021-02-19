@@ -1,0 +1,56 @@
+﻿@page "/build"
+@using BlazorBattles.Shared
+@inject BlazorBattles.Client.Services.IBananaService BananaService
+@inject BlazorBattles.Client.Services.IUnitService UnitService
+@inject IToastService ToastService
+
+<h3>Build</h3>
+
+<div class="form-group">
+    <select @bind="selectedUnitId" class="form-control">
+        
+            @foreach (var unit in UnitService.Units)
+            {
+                <option value="@unit.Id">@unit.Title // Costs: @unit.BananaCost Bananas</option>
+            }
+    </select>
+</div>
+
+<button class="btn btn-primary" @onclick="BuildUnit">Eat Bananas</button>
+
+@if (needMoreBananas)
+{
+    <div class="validation-message">
+        Not enough bananas! :(
+    </div>
+}
+
+@code {
+
+    bool needMoreBananas;
+
+    int selectedUnitId = 1;
+
+    public void BuildUnit()
+    {
+        Unit selectedUnit =
+            UnitService.Units.FirstOrDefault(unit => unit.Id == selectedUnitId);
+        if (selectedUnit.BananaCost > BananaService.Bananas)
+        {
+            needMoreBananas = true;
+            ToastService.ShowError("Not enough bananas", ":(");
+            return;
+        }
+
+        needMoreBananas = false;
+
+        BananaService.EatBananas(selectedUnit.BananaCost);
+        UnitService.AddUnit(selectedUnitId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UnitService.LoadUnitsAsync();
+    }
+
+}
