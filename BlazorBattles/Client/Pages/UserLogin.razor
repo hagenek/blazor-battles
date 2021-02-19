@@ -1,5 +1,8 @@
-﻿@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+﻿@using BlazorBattles.Client.Services
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject AuthenticationStateProvider AuthStateProvider
+@inject IAuthService AuthService
+@inject IToastService ToastService
 
 Please log in below or <NavLink href="register">register</NavLink> for a new account.
 
@@ -7,10 +10,10 @@ Please log in below or <NavLink href="register">register</NavLink> for a new acc
     <DataAnnotationsValidator />
     <p>
         <label>
-            Username
+            Email
         </label>
         <div>
-            <InputText id="username" @bind-Value="user.Username"/>
+            <InputText class="form-control" id="email" @bind-Value="user.Email"/>
         </div>
     </p>
 
@@ -19,7 +22,7 @@ Please log in below or <NavLink href="register">register</NavLink> for a new acc
             Password
         </label>
         <div>
-            <InputText id="password" type="password" @bind-Value="user.Password"/>
+            <InputText class="form-control" id="password" type="password" @bind-Value="user.Password"/>
         </div>
     </p>
     <button class="btn-primary">Login</button>
@@ -33,7 +36,16 @@ Please log in below or <NavLink href="register">register</NavLink> for a new acc
 
     private async void HandleLogin()
     {
-        await LocalStorage.SetItemAsync("isAuthenticated", true);
-        await AuthStateProvider.GetAuthenticationStateAsync();
+        var result = await AuthService.Login(user);
+        if (result.Success)
+        {
+            await LocalStorage.SetItemAsync<string>("authToken", result.Data);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+        }
+        else
+        {
+            ToastService.ShowError(result.Message);
+        }
+
     }
 }
