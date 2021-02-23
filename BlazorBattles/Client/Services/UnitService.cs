@@ -1,12 +1,11 @@
-﻿using System;
+﻿using BlazorBattles.Shared;
+using Blazored.Toast.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BlazorBattles.Shared;
-using Blazored.Toast.Services;
-
 
 namespace BlazorBattles.Client.Services
 {
@@ -23,14 +22,14 @@ namespace BlazorBattles.Client.Services
             _bananaService = bananaService;
         }
 
-        public IList<Unit> Units { get; set; }  = new List<Unit>();
+        public IList<Unit> Units { get; set; } = new List<Unit>();
+
         public IList<UserUnit> MyUnits { get; set; } = new List<UserUnit>();
 
-        public async Task AddUnit (int unitId)
+        public async Task AddUnit(int unitId)
         {
-            var unit = Units.First(unit1 => unit1.Id == unitId);
-            var result = await _http.PostAsJsonAsync("api/UserUnit", unit.Id);
-
+            Unit unit = Units.First(unit => unit.Id == unitId);
+            var result = await _http.PostAsJsonAsync<int>("api/UserUnit", unitId);
             if (result.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 _toastService.ShowError(await result.Content.ReadAsStringAsync());
@@ -38,9 +37,8 @@ namespace BlazorBattles.Client.Services
             else
             {
                 await _bananaService.GetBananas();
-                _toastService.ShowSuccess($"Your {unit.Title} has been built!", "Unit built");
+                _toastService.ShowSuccess($"Your {unit.Title} has been built!", "Unit built!");
             }
-            
         }
 
         public async Task LoadUnitsAsync()
@@ -48,13 +46,24 @@ namespace BlazorBattles.Client.Services
             if (Units.Count == 0)
             {
                 Units = await _http.GetFromJsonAsync<IList<Unit>>("api/unit");
-                Console.WriteLine(Units?[0].ToString());
             }
         }
 
         public async Task LoadUserUnitsAsync()
         {
             MyUnits = await _http.GetFromJsonAsync<IList<UserUnit>>("api/UserUnit");
+        }
+
+        public async Task ReviveArmy()
+        {
+            var result = await _http.PostAsJsonAsync<string>("api/UserUnit/Revive", null);
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                _toastService.ShowSuccess(await result.Content.ReadAsStringAsync());
+            else
+                _toastService.ShowError(await result.Content.ReadAsStringAsync());
+
+            await LoadUserUnitsAsync();
+            await _bananaService.GetBananas();
         }
     }
 }
