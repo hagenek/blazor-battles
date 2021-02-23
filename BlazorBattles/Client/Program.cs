@@ -30,6 +30,7 @@ namespace BlazorBattles.Client
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<ILeaderboardService, LeaderboardService>();
 
             await builder.Build().RunAsync();
         }
