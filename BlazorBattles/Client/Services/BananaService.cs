@@ -6,37 +6,39 @@ using System.Threading.Tasks;
 namespace BlazorBattles.Client.Services
 {
     public class BananaService : IBananaService
+    {
+        private readonly HttpClient _http;
+
+        public BananaService(HttpClient http)
         {
-            private readonly HttpClient _http;
-            public int Bananas { get; set; } = 0;
-            public event Action OnChange;
+            _http = http;
+        }
 
-            public BananaService(HttpClient http)
-            {
-                _http = http;
-            }
+        public int Bananas { get; set; }
+        public event Action OnChange;
 
-            public void EatBananas(int amount)
-            {
-                Bananas -= amount;
-                BananasChanged();
-                
-            }
+        public void EatBananas(int amount)
+        {
+            Bananas -= amount;
+            BananasChanged();
+        }
 
-            public async Task AddBananas(int amount)
-            {
-                var result = await _http.PutAsJsonAsync<int>("api/User/AddBananas", amount);
-                Bananas = await result.Content.ReadFromJsonAsync<int>();
-                BananasChanged();
-            }
+        public async Task AddBananas(int amount)
+        {
+            var result = await _http.PutAsJsonAsync("api/User/AddBananas", amount);
+            Bananas = await result.Content.ReadFromJsonAsync<int>();
+            BananasChanged();
+        }
 
-            public async Task GetBananas()
-            {
-                Bananas = await _http.GetFromJsonAsync<int>("api/User/GetBananas");
-                BananasChanged();
-            }
+        public async Task GetBananas()
+        {
+            Bananas = await _http.GetFromJsonAsync<int>("api/User/GetBananas");
+            BananasChanged();
+        }
 
-            void BananasChanged() => OnChange.Invoke();
+        private void BananasChanged()
+        {
+            OnChange.Invoke();
         }
     }
- 
+}

@@ -1,10 +1,8 @@
-﻿using BlazorBattles.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using BlazorBattles.Shared;
 
 namespace BlazorBattles.Client.Services
 {
@@ -17,7 +15,7 @@ namespace BlazorBattles.Client.Services
             _http = http;
         }
 
-        public BattleResult LastBattle { get; set; } = new BattleResult();
+        public BattleResult LastBattle { get; set; } = new();
         public IList<BattleHistoryEntry> History { get; set; } = new List<BattleHistoryEntry>();
 
         public async Task GetHistory()

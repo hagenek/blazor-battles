@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -15,12 +14,13 @@ namespace BlazorBattles.Client
 {
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
-        private readonly ILocalStorageService _localStorageService;
-        private readonly HttpClient _http;
         private readonly IBananaService _bananaService;
+        private readonly HttpClient _http;
+        private readonly ILocalStorageService _localStorageService;
 
 
-        public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient http, IBananaService bananaService)
+        public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient http,
+            IBananaService bananaService)
         {
             _localStorageService = localStorageService;
             _http = http;
@@ -29,14 +29,12 @@ namespace BlazorBattles.Client
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-
             var identity = new ClaimsIdentity();
             _http.DefaultRequestHeaders.Authorization = null;
 
-            string authToken = await _localStorageService.GetItemAsStringAsync("authToken");
+            var authToken = await _localStorageService.GetItemAsStringAsync("authToken");
 
             if (!string.IsNullOrEmpty(authToken))
-            {
                 try
                 {
                     identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
@@ -48,8 +46,6 @@ namespace BlazorBattles.Client
                     await _localStorageService.RemoveItemAsync("authToken");
                     identity = new ClaimsIdentity();
                 }
-
-            }
 
             var user = new ClaimsPrincipal(identity);
             var state = new AuthenticationState(user);
@@ -84,9 +80,11 @@ namespace BlazorBattles.Client
         {
             switch (base64.Length % 4)
             {
-                case 2: base64 += "==";
+                case 2:
+                    base64 += "==";
                     break;
-                case 3: base64 += "=";
+                case 3:
+                    base64 += "=";
                     break;
             }
 

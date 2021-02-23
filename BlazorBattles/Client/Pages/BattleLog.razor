@@ -1,5 +1,6 @@
 ﻿@page "/battlelog"
-@inject BlazorBattles.Client.Services.IBattleService BattleService
+@using BlazorBattles.Client.Services
+@inject IBattleService BattleService
 
 <h3>Battle Log</h3>
 
@@ -16,7 +17,7 @@
     {
         if (round.Contains("kills"))
             return "list-group-item list-group-item-danger";
-        else
-            return "list-group-item";
+        return "list-group-item";
     }
+
 }

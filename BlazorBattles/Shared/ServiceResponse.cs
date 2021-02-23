@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlazorBattles.Shared
+﻿namespace BlazorBattles.Shared
 {
     public class ServiceResponse<T>
     {
@@ -10,5 +6,4 @@ namespace BlazorBattles.Shared
         public bool Success { get; set; } = true;
         public string Message { get; set; }
     }
-
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BlazorBattles.Shared
 {
@@ -12,6 +8,6 @@ namespace BlazorBattles.Shared
         public int AttackerDamageSum { get; set; }
         public int OpponentDamageSum { get; set; }
         public bool IsVictory { get; set; }
-        public int RoundsFought { get; set; }   
+        public int RoundsFought { get; set; }
     }
 }

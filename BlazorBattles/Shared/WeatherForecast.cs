@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BlazorBattles.Shared
 {
@@ -12,6 +10,6 @@ namespace BlazorBattles.Shared
 
         public string Summary { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public int TemperatureF => 32 + (int) (TemperatureC / 0.5556);
     }
 }

@@ -1,6 +1,7 @@
 ﻿@page "/history"
 @using BlazorBattles.Client.Services
-@inject BlazorBattles.Client.Services.IBattleService BattleService
+@using BlazorBattles.Shared
+@inject IBattleService BattleService
 
 <h3>History</h3>
 
@@ -31,16 +32,17 @@
 </table>
 
 @code {
-protected override async Task OnInitializedAsync()
-{
-await BattleService.GetHistory();
-}
 
-string GetHistoryStyle(BlazorBattles.Shared.BattleHistoryEntry entry)
-{
-if (entry.YouWon)
-return "color: green; font-weight: 600";
-else
-return string.Empty;
-}
+    protected override async Task OnInitializedAsync()
+    {
+        await BattleService.GetHistory();
+    }
+
+    string GetHistoryStyle(BattleHistoryEntry entry)
+    {
+        if (entry.YouWon)
+            return "color: green; font-weight: 600";
+        return string.Empty;
+    }
+
 }

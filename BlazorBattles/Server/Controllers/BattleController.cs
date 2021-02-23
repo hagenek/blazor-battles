@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlazorBattles.Server.Data;
 using BlazorBattles.Server.Services;
 using BlazorBattles.Shared;
 using BlazorBattles.Shared.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,10 +30,7 @@ namespace BlazorBattles.Server.Controllers
         {
             var attacker = await _utilityService.GetUser();
             var opponent = await _context.Users.FindAsync(opponentId);
-            if (opponent == null || opponent.IsDeleted)
-            {
-                return NotFound("Opponent not available.");
-            }
+            if (opponent == null || opponent.IsDeleted) return NotFound("Opponent not available.");
 
             var result = new BattleResult();
             await Fight(attacker, opponent, result);
@@ -45,7 +40,6 @@ namespace BlazorBattles.Server.Controllers
 
         private async Task Fight(User attacker, User opponent, BattleResult result)
         {
-
             var attackerArmy = await _context.UserUnits
                 .Where(u => u.UserId == attacker.Id && u.HitPoints > 0)
                 .Include(u => u.Unit)
@@ -58,7 +52,7 @@ namespace BlazorBattles.Server.Controllers
             var attackerDamageSum = 0;
             var opponentDamageSum = 0;
 
-            int currentRound = 0;
+            var currentRound = 0;
             while (attackerArmy.Count > 0 && opponentArmy.Count > 0)
             {
                 currentRound++;
@@ -79,9 +73,8 @@ namespace BlazorBattles.Server.Controllers
         private int FightRound(User attacker, User opponent,
             List<UserUnit> attackerArmy, List<UserUnit> opponentArmy, BattleResult result)
         {
-
-            int randomAttackerIndex = new Random().Next(attackerArmy.Count);
-            int randomOpponentIndex = new Random().Next(opponentArmy.Count);
+            var randomAttackerIndex = new Random().Next(attackerArmy.Count);
+            var randomOpponentIndex = new Random().Next(opponentArmy.Count);
 
             var randomAttacker = attackerArmy[randomAttackerIndex];
             var randomOpponent = opponentArmy[randomOpponentIndex];
@@ -98,16 +91,14 @@ namespace BlazorBattles.Server.Controllers
                     $"{opponent.Username}'s {randomOpponent.Unit.Title} with {damage} damage.");
                 return damage;
             }
-            else
-            {
-                damage = randomOpponent.HitPoints;
-                randomOpponent.HitPoints = 0;
-                opponentArmy.Remove(randomOpponent);
-                result.Log.Add(
-                    $"{attacker.Username}'s {randomAttacker.Unit.Title} kills " +
-                    $"{opponent.Username}'s {randomOpponent.Unit.Title}!");
-                return damage;
-            }
+
+            damage = randomOpponent.HitPoints;
+            randomOpponent.HitPoints = 0;
+            opponentArmy.Remove(randomOpponent);
+            result.Log.Add(
+                $"{attacker.Username}'s {randomAttacker.Unit.Title} kills " +
+                $"{opponent.Username}'s {randomOpponent.Unit.Title}!");
+            return damage;
         }
 
         private async Task FinishFight(User attacker, User opponent, BattleResult result,

@@ -5,8 +5,8 @@ namespace BlazorBattles.Client.Services
 {
     public interface IBananaService
     {
-        event Action OnChange;
         int Bananas { get; set; }
+        event Action OnChange;
         void EatBananas(int amount);
         Task AddBananas(int amount);
 
