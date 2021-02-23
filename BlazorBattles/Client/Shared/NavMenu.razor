@@ -30,11 +30,18 @@
                         <span class="oi oi-shield" aria-hidden="true"></span> Army
                     </NavLink>
                 </li>
-                <li class="nav-item px-3">
-                    <a class="nav-link" @onclick="Logout" style="cursor: pointer;">
-                        <span class="oi oi-account-logout" ariahidden="true"></span>Logout
-                    </a>
-                </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="leaderboard">
+                    <span class="oi oi-arrow-circle-top" aria-hidden="true"></span> Leaderboard
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <a class="nav-link" @onclick="Logout" style="cursor: pointer;">
+                    <span class="oi oi-account-logout" ariahidden="true"></span>Logout
+                </a>
+            </li>
+
+
         </Authorized>
         <NotAuthorized>
             <li class="nav-item px-3">
