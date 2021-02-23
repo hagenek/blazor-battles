@@ -8,9 +8,11 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using System.Text;
 using BlazorBattles.Server.Data;
+using BlazorBattles.Server.Services;
 using BlazorBattles.Shared.Data;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -48,6 +50,8 @@ namespace BlazorBattles.Server
                     ValidateAudience = false
                 };
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<IUtilityService, UtilityService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

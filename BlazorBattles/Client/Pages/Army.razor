@@ -22,7 +22,7 @@
             }
         </div>
         <div>
-            @UnitService.Units.FirstOrDefault(unit => unit.Id == userUnit.UnitId).Title
+            @UnitService.Units.FirstOrDefault(unit => unit.Id == userUnit.UnitId)?.Title
         </div>
         <div>
             @userUnit.HitPoints HP
@@ -35,13 +35,10 @@ else
     <span>Loading...</span>
 }
 
-
-
-
-
 @code {
     protected override async Task OnInitializedAsync()
     {
         await UnitService.LoadUnitsAsync();
+        await UnitService.LoadUserUnitsAsync();
     }
 }

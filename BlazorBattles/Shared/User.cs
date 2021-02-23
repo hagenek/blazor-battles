@@ -19,6 +19,7 @@ namespace BlazorBattles.Shared
         public List<UserUnit> Units { get; set; }
         public int Battles { get; set; }
         public int Victories { get; set; }
-        public int Defeats { get; set; }
+        public int Defeats { get; set; } 
+
     }
 }

@@ -18,6 +18,10 @@ namespace BlazorBattles.Shared
 
     public int BananaCost { get; set; }
 
+    public override string ToString()
+    {
+        return $"Id: {Id} Title: {Title} Attack: {Attack} Defense {Defense} HitPoints: {HitPoints} BananaCost: {BananaCost}";
+    }
 }
 
 }
